@@ -63,7 +63,114 @@ function Queue(){
 		console.log(items.toString());
 	}
 }
+//创建链表
+function LinkedList(){
+	var Node = function(element){
+		this.element = element;
+		this.next = null;
+	}
 
+	var length = 0;
+	var head = null;
+
+	this.append = function(element){
+		var node = new Node(element),
+		current;
+
+		if(head == null){
+			head = node;
+		}else{
+			current = head;
+			while(current.next){
+				current = current.next;
+			}
+			current.next= node;
+		}
+		length ++;
+	};
+
+	this.insert = function(position,element){
+		this.insert = function(position, element){
+			//检查越界值
+			if (position >= 0 && position <= length){ //{1}
+				var node = new Node(element),
+				current = head,
+				previous,
+				index = 0;
+				if (position === 0){ //在第一个位置添加
+					node.next = current; //{2}
+					head = node;
+				} else {
+					while (index++ < position){ //{3}
+					previous = current;
+					current = current.next;
+					}
+					node.next = current; //{4}
+					previous.next = node; //{5}
+				}
+				length++; //更新列表的长度
+				return true;
+			} else {
+				return false; //{6}
+			}
+		};
+	};
+
+	this.removeAt = function(position){
+		if (position > -1 && position < length){
+			var current = head,
+				previous,
+				index = 0;
+			//移除第一项
+			if (position === 0){
+				head = current.next;
+			} else {
+				while (index++ < position){ 
+					previous = current; 
+					current = current.next; 
+				}
+				//将previous与current的下一项链接起来：跳过current，从而移除它
+				previous.next = current.next; 
+			}
+			length--; 
+			return current.element;
+		} else {
+			return null;
+		}
+	};
+
+	this.remove = function(element){
+		this.remove = function(element){
+			var index = this.indexOf(element);
+			return this.removeAt(index);
+		};
+	};
+
+	this.indexOf = function(element){
+		this.indexOf = function(element){
+			var current = head, //{1}
+				index = -1;
+			while (current) { //{2}
+				if (element === current.element) {
+					return index; //{3}
+				}
+				index++; //{4}
+				current = current.next; //{5}
+			}
+			return -1;
+		};
+	};
+
+	this.isEmpty = function() {
+		return length === 0;
+	};
+
+
+	this.size = function() {
+		return length;
+	};
+
+}
 //用set类来实现集合的概念
 function Set(){
 	var items = {};
@@ -143,6 +250,14 @@ var loseloseHashCode = function(key){
 	}
 	return hash % 37;
 }
+//djb2散列函数
+var djb2HashCode = function(key){
+	var hash = 5381;
+	for(var i = 0;i < key.length;i++){
+		hash = hash * 33 + key.charCodeAt(i);
+	}
+	return hash % 1013;
+}
 function HashTable(){
 
 	var table = [];
@@ -161,7 +276,7 @@ function HashTable(){
 		table[loseloseHashCode(key)] = undefined;
 	}
 }
-//分离链接解决散列表问题
+//1.分离链接解决散列表冲突
 var ValuePair = function(key,value){
 	this.key = key;
 	this.value = value;
@@ -169,3 +284,16 @@ var ValuePair = function(key,value){
 		return '[' + this.key + ' - ' + this.value + ']';
 	}
 }
+//2.线性探查解决冲突（冲突的时候index会自增长1）
+this.put = function(key, value){
+	var position = loseloseHashCode(key); // {1}
+	if (table[position] == undefined) { // {2}
+		table[position] = new ValuePair(key, value); // {3}
+	} else {
+		var index = ++position; // {4}
+		while (table[index] != undefined){ // {5}
+			index++; // {6}
+		}
+		table[index] = new ValuePair(key, value); // {7}
+	}
+};
