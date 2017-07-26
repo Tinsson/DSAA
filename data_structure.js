@@ -297,3 +297,24 @@ this.put = function(key, value){
 		table[index] = new ValuePair(key, value); // {7}
 	}
 };
+
+//创建二叉树类(BinarySearchTree)
+function BinarySearchTree(){
+	var Node = function(key){
+		this.key = key;
+		this.left = null;
+		this.right = null;
+	};
+
+	var root = null;
+
+	this.insert = function(key){
+		var newNode = new Node(key);
+		if(root === null){
+			root = newNode;
+		}else{
+			insertNode(root,newNode);
+		}
+	};
+	
+}
