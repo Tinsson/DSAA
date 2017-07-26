@@ -316,5 +316,21 @@ function BinarySearchTree(){
 			insertNode(root,newNode);
 		}
 	};
-	
+
+}
+//辅助添加非根节点函数
+var insertNode = function(node,newNode){
+	if(newNode.key < node.key){
+		if(node.left === null){
+			node.left = newNode;
+		}else {
+			insertNode(node.left, newNode);
+		}
+	}else{
+		if(node.right === null){
+			node.right = newNode;
+		}else{
+			insertNode(node.right,newNode);
+		}
+	}
 }
