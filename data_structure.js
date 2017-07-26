@@ -144,6 +144,7 @@ var loseloseHashCode = function(key){
 	return hash % 37;
 }
 function HashTable(){
+
 	var table = [];
 	
 	this.put = function(key,value){
@@ -151,12 +152,20 @@ function HashTable(){
 		console.log(position + ' - '+ key);
 		table[position] = value;
 	}
-	
+
 	this.get = function(key){
 		return table[loseloseHashCode(key)];
 	}
 
 	this.remove = function(key){
 		table[loseloseHashCode(key)] = undefined;
+	}
+}
+//分离链接解决散列表问题
+var ValuePair = function(key,value){
+	this.key = key;
+	this.value = value;
+	this.toString = function(){
+		return '[' + this.key + ' - ' + this.value + ']';
 	}
 }
