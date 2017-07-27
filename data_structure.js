@@ -317,6 +317,25 @@ function BinarySearchTree(){
 		}
 	};
 
+	this.inOrderTraverse = function(callback){
+		inOrderTraverseNode(root, callback);
+	}
+
+	this.preOrderTraverse = function(callback){
+		preOrderTraverseNode(root, callback);
+	}
+
+	this.postOrderTraverse = function(callback){
+		postOrderTraverseNode(root, callback);
+	}
+
+	this.min = function(){
+		return minNode(root);
+	}
+
+	this.max = function(){
+		return maxNode(root);
+	}
 }
 //辅助添加非根节点函数
 var insertNode = function(node,newNode){
@@ -333,4 +352,48 @@ var insertNode = function(node,newNode){
 			insertNode(node.right,newNode);
 		}
 	}
+}
+//中序遍历辅助函数  按键从小到大遍历（对树进行排序操作）
+var inOrderTraverseNode = function (node, callback){
+	if(node! == null){
+		inOrderTraverseNode(node.left,callback);
+		callback(node.key);
+		inOrderTraverseNode(node.right,callback);
+	}
+}
+//先序遍历，优先于后代节点的顺序访问每个节点(打印一个结构化的文档)
+var preOrderTraverseNode = function(node,callback){
+	if(node! == null){
+		callback(node.key);
+		preOrderTraverseNode(node.left,callback);
+		preOrderTraverseNode(node.right,callback);
+	}
+}
+//后序遍历，先访问节点的后代节点，再访问节点本身（计算一个目录和它的子目录中所有文件所占空间的大小）
+var postOrderTraverseNode = function(node,callback){
+	if(node! == null){
+		postOrderTraverseNode(node.left,callback);
+		postOrderTraverseNode(node.right,callback);
+		callback(node.key);
+	}
+}
+//寻找树的最小键方法
+var minNode = function(node){
+	if(node){
+		while(node && node.left !== null){
+			node = node.left;
+		}
+		return node.key;
+	}
+	return null;
+}
+//寻找数的最大键方法
+var maxNode = function(node){
+	if(node){
+		while(node && node.right !== null){
+			node = node.right;
+		}
+		return node.key;
+	}
+	return null;
 }
