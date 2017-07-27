@@ -336,6 +336,14 @@ function BinarySearchTree(){
 	this.max = function(){
 		return maxNode(root);
 	}
+
+	this.search = function(key){
+		return searchNode(root, key);
+	}
+
+	this.remove = function(key){
+		root = removeNode(root, key);
+	}
 }
 //辅助添加非根节点函数
 var insertNode = function(node,newNode){
@@ -396,4 +404,46 @@ var maxNode = function(node){
 		return node.key;
 	}
 	return null;
+}
+//搜索功能
+var searchNode = function(node,key){
+	if(node === null){
+		return false;
+	}
+	if(key < node.key){
+		searchNode(node.left,key);
+	}else if(key > node.key){
+		searchNode(node.right,key);
+	}else{
+		return true;
+	}
+}
+//移除节点
+var removeNode = function(node,key){
+	if(node === null){
+		return false;
+	}
+	if(key < node.key){
+		node.left = removeNode(node.left,key);
+		return node;
+	}else if(key > node.key){
+		node.right = romoveNode(node.right,key);
+		return node;
+	}else{
+		if(node.left === null && node.right === null){
+			node = null;
+			return node;
+		}else if(node.left === null){
+			node = node.right;
+			return node;
+		}else if(node.right === null){
+			node = node.left;
+			return node;
+		}
+
+		var aux = findMinNode(node.right);
+		node.key = aux.key;
+		node.right = removeNode(node.right,aux.key);
+		return node;
+	}
 }
